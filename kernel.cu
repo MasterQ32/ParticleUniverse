@@ -1,6 +1,6 @@
 #include "particles.h"
 
-const float gravConst = 0.0125f;
+__constant const float gravConst = 0.0125f;
 
 ///
 /// Returns radius defined by mass and density
