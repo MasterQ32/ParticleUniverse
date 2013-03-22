@@ -44,7 +44,7 @@ int imagePitch;
 
 int simulationDepth = 1;
 
-const int particleCount = 1000;
+const int particleCount = 500;
 Particle particles[particleCount];
 
 float zoom = 1.0f;
@@ -211,7 +211,12 @@ int main(int argc, char **argv)
 		if(*ev->key_space == 0)
 		{
 			// Simulate multiple steps in one frame
-			for(int i = 0; i < simulationDepth; i++)
+			int numSteps = simulationDepth;
+
+			// Speed x4
+			if(*ev->key_shift != NULL)
+				numSteps = 4 * numSteps;
+			for(int i = 0; i < numSteps; i++)
 			{
 				errCode = clEnqueueNDRangeKernel(
 					queue,

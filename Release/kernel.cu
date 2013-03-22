@@ -47,8 +47,8 @@ void __kernel simulate(
 
 		if((particles[i].flags & PARTICLE_CRUNCHER) != 0)
 		{
-			// Check if we ran into a particle cruncher (simple circle intersection)
-			if(dist < (getRadius(&particles[i]) + radius))
+			// Check if we ran into a particle cruncher (simple circle/point intersection)
+			if(dist < (max(getRadius(&particles[i]), radius)))
 			{
 				bool getCrunch = true;
 				// Check if we are a particle cruncher and heavier...
@@ -71,6 +71,9 @@ void __kernel simulate(
 				if(getCrunch)
 				{
 					p->type = 0;
+
+					// Add velocity delta with conservation of momentum
+					particles[i].velocity += (particles[i].velocity * particles[i].mass + p->velocity * p->mass) / (particles[i].mass + p->mass) - particles[i].velocity;
 					particles[i].mass += p->mass;
 					return;
 				}
